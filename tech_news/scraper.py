@@ -38,8 +38,35 @@ def scrape_next_page_link(html_content):
 
 # Requisito 4
 def scrape_news(html_content):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    selector = Selector(text=html_content)
+    url = selector.css('link[rel="canonical"]::attr(href)').get()
+    title = selector.css(".entry-title::text").get().strip()
+    author = selector.css(".author a::text").get()
+    timestamp = selector.css("li.meta-date::text").get()
+    reading_time = selector.css(".meta-reading-time::text").get()
+    summary = "".join(
+        selector.css(".entry-content > p:first-of-type *::text").getall()
+    ).strip()
+    category = selector.css(".category-style .label::text").get()
+
+    if not title:
+        return {"url": None, "title": None, "timestamp": None, "writer": None}
+    return {
+        "url": url,
+        "title": title,
+        "timestamp": timestamp,
+        "writer": author,
+        "reading_time": int(reading_time[:2]),
+        "summary": summary,
+        "category": category,
+    }
+
+
+print(
+    scrape_news(
+        fetch("https://blog.betrybe.com/carreira/frases-de-lideranca/")
+    )
+)
 
 
 # Requisito 5
