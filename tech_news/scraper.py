@@ -78,9 +78,5 @@ def get_tech_news(amount):
     for url in links[:amount]:
         news_html = fetch(url)
         news.append(scrape_news(news_html))
-    print(news, len(news))
     create_news(news)
     return news
-
-
-get_tech_news(5)
