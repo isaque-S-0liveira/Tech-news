@@ -1,1 +1,0 @@
-print(scrape_next_page_link(fetch("https://blog.betrybe.com/page/2/")))
